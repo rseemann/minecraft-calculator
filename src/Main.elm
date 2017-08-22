@@ -27,7 +27,7 @@ type Msg =
 view : Model -> Html Msg
 view model =
   div []
-    [ text model ]
+      [ text model ]
 
 
 -- UPDATE
@@ -42,8 +42,9 @@ update msg model =
 
 -- SUBSCRIPTIONS
 
+
 subscriptions : Model -> Sub Msg
-subscriptions : model =
+subscriptions model =
   Sub.none
 
 
