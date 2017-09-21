@@ -29,14 +29,14 @@ view model =
             |> List.repeat model.width
             |> List.indexedMap (\i pixel ->
                 pixel (positionFinder gridWidth model.width i)
-                |> List.repeat model.height
+            )
+            |> List.concatMap (\pixel ->
+                List.repeat model.height pixel
                 |> List.indexedMap
                 (\j row ->
                     row (positionFinder gridHeight model.height j)
                 )
             )
-        |> Debug.log "start"
-
 
     in
         div []
