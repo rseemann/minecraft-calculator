@@ -8,9 +8,6 @@ import Models exposing (Model)
 
 import Debug
 
-gridSize = 120
-
-
 type alias Pixel =
     { stroke : String
     , size : Int
@@ -21,6 +18,7 @@ type alias Pixel =
 view : Model -> Html msg
 view model =
     let
+        gridSize = model.pixelSize
         gridWidth = gridSize * model.width
         gridHeight = gridSize * model.height
         gridCount = model.width * model.height
@@ -38,6 +36,10 @@ view model =
                 )
             )
 
+        svgPixels = List.map (\p ->
+            svgPixel p.x p.y p.size p.size
+        ) pixels
+
     in
         div []
             [
@@ -45,9 +47,7 @@ view model =
                     , Att.height (toString gridHeight)
                     , Att.viewBox <| "0 0 " ++ (toString gridWidth) ++ " " ++ (toString gridHeight)
                     ]
-                [ svgPixel 0 0 gridSize gridSize
-                , svgPixel 120 120 gridSize gridSize
-                ]
+                svgPixels
             ]
 
 positionFinder : Int -> Int -> Int -> Int
