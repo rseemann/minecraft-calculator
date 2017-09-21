@@ -1,61 +1,24 @@
-module Main exposing (..)
+import Models exposing (Model)
+import Views exposing (view)
 
-import Html exposing (Html, div, text, program)
-
+import Html exposing (Html)
 
 -- MODEL
 
-
-type alias Model =
-  String
-
-
-init : ( Model, Cmd Msg )
+init : Model
 init =
-  ( "Shaper!", Cmd.none )
-
-
--- MESSAGES
-
-
-type Msg =
-  NoOp
-
-
--- VIEW
-
-view : Model -> Html Msg
-view model =
-  div []
-      [ text model ]
-
+    { width = 4, height = 4 }
 
 -- UPDATE
 
+type Msg = Increment | Decrement
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update msg model =
-  case msg of
-    NoOp ->
-      ( model, Cmd.none )
-
-
--- SUBSCRIPTIONS
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
+  model
 
 
 -- MAIN
 
-
-main : Program Never Model Msg
 main =
-  program
-    { init = init
-    , view = view
-    , update = update
-    , subscriptions = subscriptions
-    }
+  Html.beginnerProgram { model = init, view = view, update = update }
