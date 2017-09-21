@@ -25,18 +25,18 @@ view model =
         gridHeight = gridSize * model.height
         gridCount = model.width * model.height
 
-        arg = Debug.log "start" <|
-            List.indexedMap
-            (\i row ->
-                List.indexedMap (\j p ->
-                    p (pixelXFinder gridWidth model.width j)
-                ) row
-            ) <|
-            List.repeat 4 <|
-            List.indexedMap
-            (\i pixel -> pixel (pixelXFinder gridWidth model.width i)) <|
-            List.repeat 4 <|
-            Pixel "#C82D2D" 120
+        pixels = Pixel "#C82D2D" gridSize
+            |> List.repeat model.width
+            |> List.indexedMap (\i pixel ->
+                pixel (positionFinder gridWidth model.width i)
+                |> List.repeat model.height
+                |> List.indexedMap
+                (\j row ->
+                    row (positionFinder gridHeight model.height j)
+                )
+            )
+        |> Debug.log "start"
+
 
     in
         div []
@@ -50,9 +50,9 @@ view model =
                 ]
             ]
 
-pixelXFinder : Int -> Int -> Int -> Int
-pixelXFinder width numCols index =
-    (width * (index)) // numCols
+positionFinder : Int -> Int -> Int -> Int
+positionFinder totalSize numDivisions index =
+    (totalSize * (index)) // numDivisions
 
 svgPixel : Int -> Int -> Int -> Int -> Html.Html msg
 svgPixel x y width height =
