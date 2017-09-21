@@ -7,7 +7,7 @@ import Html exposing (Html)
 
 init : Model
 init =
-    { width = 4, height = 4 }
+    { width = 20, height = 40, pixelSize = 10 }
 
 -- UPDATE
 
