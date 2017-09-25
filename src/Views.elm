@@ -18,22 +18,15 @@ type alias Pixel =
 view : Model -> Html msg
 view model =
     let
-        gridSize = model.pixelSize
-        gridWidth = gridSize * model.width
-        gridHeight = gridSize * model.height
+        pixelSize = model.pixelSize
+        gridWidth = pixelSize * model.width
+        gridHeight = pixelSize * model.height
         gridCount = model.width * model.height
 
-        pixels = Pixel "#C82D2D" gridSize
-            |> List.repeat model.width
-            |> List.indexedMap (\i pixel ->
-                pixel (positionFinder gridWidth model.width i)
-            )
-            |> List.concatMap (\pixel ->
-                List.repeat model.height pixel
-                |> List.indexedMap
-                (\j row ->
-                    row (positionFinder gridHeight model.height j)
-                )
+        pixels = Pixel "#C82D2D" pixelSize
+            |> pixelCloner model.width model.pixelSize
+            |> List.concatMap (
+                pixelCloner model.height model.pixelSize
             )
 
         svgPixels = List.map (\p ->
@@ -50,9 +43,11 @@ view model =
                 svgPixels
             ]
 
-positionFinder : Int -> Int -> Int -> Int
-positionFinder totalSize numDivisions index =
-    (totalSize * (index)) // numDivisions
+pixelCloner numClones pixelSize pixel =
+    List.repeat numClones pixel
+    |> List.indexedMap (\i p ->
+        p (pixelSize * i)
+    )
 
 svgPixel : Int -> Int -> Int -> Int -> Html.Html msg
 svgPixel x y width height =
